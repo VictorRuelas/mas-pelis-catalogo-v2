@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>+Pelis</title>
+    <link rel="shortcut icon" type="image/png" href="img/icono-pelis.png">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/jquery-3.6.0.js"></script>
+    <script type="module" src="/js/app.js" defer></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="site-header__logo"> 
+            <a href="index.html">
+                <img src="img/logo-Pelis.svg" alt="logo" class="site-header__logo__img">
+            </a>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar título, director, género..." class="search-bar__input">
+        </div>
+        <div class="site-header__actions">
+            <button class="action-btn" id="btn-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-badge hidden" id="badge-cart">0</span>
+            </button>
+        </div>
+    </header>
+    <div class="site-main">
+        <nav class="filter-nav">
+            <button class="filter-nav__button filter-nav__button--active" data-cat="all">Todas</button>
+            <button class="filter-nav__button" data-cat="Acción">Acción</button>
+            <button class="filter-nav__button" data-cat="Ciencia ficción">Ciencia Ficción</button>
+            <button class="filter-nav__button" data-cat="Terror">Terror</button>
+            <button class="filter-nav__button" data-cat="Romance">Romance</button>
+        </nav>
+        <main id="main-content">
+            <div id="loader" class="catalog-grid">
+                <div class="loader"><i class="fas fa-spinner fa-spin"></i> Cargando películas...</div>
+            </div>
+            <div id="catalog" class="catalog-grid hidden">
+            </div>
+        </main>
+
+    </div>
+    <aside class="cart-sidebar" id="cart-modal">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Tu Cesta</h2>
+            <button onclick="toggleCart()"
+                style="background:none; border:none; font-size: 1.5rem; cursor:pointer; color: #444;">&times;</button>
+        </div>
+        <div class="cart-sidebar__items" id="cart-items-container">
+            <p style="color: #888; text-align: center; margin-top: 50px;">El carrito está vacío</p>
+        </div>
+        <div class="cart-sidebar__total">
+            Total: <span id="cart-total-price">$0.00</span>
+        </div>
+        <button class="cart-sidebar__checkout-btn" id="btn-checkout">Finalizar Compra</button>
+    </aside>
+    <div id="toast" class="toast-message">Mensaje de notificación</div>
+
+    <div id="btn-scroll-top">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span id="scroll-top-message">Inicio</span>
+    </div>
+
+    <footer>
+        <div id="footer-developer">
+            <p>Desarrollado por: &copy;Victor Ruelas 2025</p>
+        </div>
+        <div id="footer-disclaimer">
+            <p>&copy;UNIR | Proyecto para la materia de Desarrollo Web Integral de la Maestría en Ingeniería de Software
+                y Sistemas
+                Informáticos</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,598 @@
+/* CONFIGURACIÓN INICIAL Y VARIABLES */
+
+/* Variables de color de +Pelis */
+:root {
+    /* Rojo principal de la marca */
+    --color-primary-dark: #820000;
+    /* Acento para bordes/botones */
+    --color-secondary-accent: gold;
+    --color-card-bg: beige;
+    /* Fondo principal del sitio */
+    --color-dark-bg: #444;
+    /* Color de texto sobre fondos oscuros */
+    --color-light-text: #fff;
+    /* Color de texto sobre fondos claros */
+    --color-dark-text: #444;
+}
+
+/* Tipografía: Importación de fuentes personalizadas */
+@font-face {
+    font-family: 'Jost Black';
+    src: url('fonts/static/Jost-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Jost Black Bold';
+    src: url('fonts/static/Jost-Bold.ttf');
+}
+
+/* Reset CSS: Aplica estilos base a todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+
+    /* 🚨 CORRECCIÓN DE USABILIDAD Y COMPORTAMIENTO NATIVO: 
+     * 'overscroll-behavior: none;' controla lo que sucede cuando el scroll 
+     * alcanza el límite de la página (el inicio o el final).
+     * * Al establecerlo a 'none', se DESACTIVA el efecto de "rebote" elástico 
+     * (scroll elástico) que se observa en trackpads y dispositivos táctiles 
+     * en el eje Y (vertical). 
+     * * Esto evita que la página se deslice más allá de su contenido real.
+     */
+    overscroll-behavior: none;
+}
+
+/* Estilos Globales del Contenedor Principal (Body) */
+body {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    /* Mantenemos el control horizontal */
+    background-color: #444;
+    background-image: url("../img/pattern.png");
+    color: #444;
+    /* Configuración de tipografía y color de texto por defecto */
+    font-family: 'Jost Black';
+    /* Establece el color claro para el texto principal */
+    color: var(--color-light-text);
+}
+
+
+/* ======================================= */
+/* HEADER (Bloque: .site-header)           */
+/* ======================================= */
+
+/* Contenedor principal del encabezado */
+.site-header {
+    /* ======================================= */
+    /* 1. POSICIONAMIENTO Y FLUJO (Fixed) 📌 */
+    /* ======================================= */
+    position: fixed;
+    /* Fija el elemento a la ventana del navegador */
+    top: 0;
+    /* Lo pega al borde superior */
+    width: 100%;
+    /* Asegura que ocupe el ancho total del viewport */
+    z-index: 1000;
+    /* Asegura que esté por encima de todo el contenido */
+
+    /* ======================================= */
+    /* 2. VISUALIZACIÓN Y ALINEACIÓN (Flexbox) 🔄 */
+    /* ======================================= */
+    display: flex;
+    /* Habilita el modelo Flexbox */
+    justify-content: space-between;
+    /* Alinea el logo a la izquierda y acciones a la derecha */
+    align-items: center;
+    /* Centrado vertical */
+
+    /* ======================================= */
+    /* 3. DIMENSIONES Y MODELO DE CAJA 📦 */
+    /* ======================================= */
+    height: 60px;
+    /* Altura fija del encabezado */
+    background: #fff;
+    /* Color de fondo */
+    margin: 0;
+    /* Restablece cualquier margen */
+    /* Padding para evitar que el contenido se pegue a los bordes */
+    padding: 0 20px;
+}
+
+.site-header__logo {
+    width: auto;
+    height: 80%;
+}
+
+.site-header__logo__img {
+    height: 100%;
+    overflow: hidden;
+}
+
+.site-header__actions {
+    /* Contenedor de acciones del header */
+}
+
+/* --- Botón Genérico de Acción (Carrito) --- */
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    color: var(--color-dark-text);
+}
+
+/* --- Badge del Carrito (Elemento: .cart-badge) --- */
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: orange;
+    color: var(--color-primary-dark);
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    overflow-x: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ======================================= */
+/* CONTENIDO PRINCIPAL (Bloque: .site-main)*/
+/* ======================================= */
+.site-main {
+    padding-top: 60px;
+    /* Separación para el header fixed */
+}
+
+
+/* ======================================= */
+/* BUSCADOR (Bloque: .search-bar)          */
+/* ======================================= */
+.search-bar {
+    width: 50%;
+}
+
+.search-bar__input {
+    width: 90%;
+    max-width: 600px;
+    padding: 12px 20px;
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 30px;
+    font-size: 1rem;
+    background-color: white;
+    color: var(--color-dark-text);
+}
+
+/* ======================================= */
+/* FILTROS (Bloque: .filter-nav)           */
+/* ======================================= */
+
+.filter-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0px;
+}
+
+.filter-nav__button {
+    padding: 8px 20px;
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 20px;
+    background: #fff;
+    color: var(--color-dark-text);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.filter-nav__button--active,
+.filter-nav__button:hover {
+    background-color: var(--color-primary-dark);
+    color: white;
+}
+
+
+/* ======================================= */
+/* CATALOGO (Bloque: .catalog-grid)        */
+/* ======================================= */
+.catalog-grid {
+    width: 100%;
+    height: auto;
+    margin: 20px auto;
+    display: grid;
+    /* Se usa auto-fit para que se adapte mejor a diferentes tamaños */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    justify-items: center;
+    max-width: 1200px;
+}
+
+/* --- Tarjeta de Producto (Bloque: .product-card) --- */
+.product-card {
+    background-color: var(--color-card-bg);
+    color: var(--color-dark-text);
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 1em;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+/* --- Elementos de Imagen y Reproducción --- */
+/* ============================================== */
+/* 🚨 1. Contenedor de Hover (product-card__top-content) */
+/* ============================================== */
+
+.product-card__top-content {
+    /* 🚨 CRÍTICO: Usa Flexbox para controlar la distribución vertical */
+    display: flex;
+    flex-direction: column;
+
+    /* Altura forzada */
+    height: 85%;
+
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.product-card__image,
+.product-card__play-icon {
+    /* flex-grow: 1: Hace que la imagen ocupe todo el espacio sobrante */
+    flex-grow: 1;
+
+    /* Altura mínima para asegurar que el póster se vea */
+
+    width: 100%;
+    /* Object-fit asegura que la imagen se vea bien dentro del marco fijo */
+    object-fit: cover;
+    /* Las reglas de border-radius y transition se mantienen aquí */
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    transition: opacity 0.3s;
+}
+
+/* --- Detalles (Nombre, Género) --- */
+.product-card__details {
+    /* flex-shrink: 0: Asegura que el contenedor de detalles no se comprima */
+    flex-shrink: 0;
+    /* Altura auto: El contenido dicta la altura */
+    min-height: 20%;
+    /* El resto de estilos de alineación y padding se mantienen */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-flow: column;
+    margin-left: 4%;
+    padding-top: 5px;
+    font-size: 0.9em;
+    overflow: hidden;
+}
+
+.product-card__play-icon {
+    display: none;
+    /* Oculto por defecto */
+}
+
+/* --- Detalles (details) --- */
+/* Estilos de detalles de tarjetas de producto y detalles de trailer:hover*/
+.product-card__details,
+.product-card__trailer {
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-flow: column;
+    margin-left: 4%;
+    padding-top: 5px;
+}
+
+/* Margen de fondo para la tarjeta de producto:hover */
+.product-card__trailer {
+    margin-bottom: 25px;
+}
+
+.product-card__details p {
+    color: var(--color-dark-text);
+}
+
+.product-card__details__genres {
+    font-size: 11px;
+}
+
+/* --- Trailer (trailer) --- */
+.product-card__trailer {
+    display: none;
+    /* Oculto por defecto */
+    color: white;
+}
+
+/* --- Hovers de JQuery (Renombrados) --- */
+.product-card img,
+.product-card .product-card__play-icon {
+    /* Manteniendo estilos base */
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.product-card p {
+    background-color: transparent;
+    font-size: 14px;
+}
+
+
+/* ============================================== */
+/* 4. Bloque: Acciones de la Tarjeta (product-card__actions) */
+/* ============================================== */
+
+.product-card__actions {
+    /* Habilita Flexbox para alinear los botones en una fila */
+    display: flex;
+    /* Espacio entre los dos botones */
+    gap: 8px;
+    /* Relleno para que no se pegue a los bordes de la tarjeta */
+    padding: 10px;
+    /* Asegura que el contenedor ocupe el ancho disponible */
+    width: 100%;
+
+    /* 🚨 Altura ajustada: % restante */
+    height: 15%;
+    flex-shrink: 0;
+    /* Asegura que este contenedor no se reduzca de tamaño */
+    align-items: center;
+}
+
+/* ============================================== */
+/* 5. Elemento: Botón Genérico (Estilos Base) */
+/* ============================================== */
+
+/* Estilos aplicados a ambos botones para tamaño y distribución */
+.product-card__actions__button {
+    /* CRÍTICO: Permite que ambos botones crezcan y compartan el espacio por igual */
+    flex-grow: 1;
+
+    /* Configuración de caja y texto */
+    padding: 8px 10px;
+    /* Reduce el relleno para que se vean más pequeños */
+    text-align: center;
+    font-size: 0.9em;
+    /* Fuente ligeramente más pequeña */
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+/* ============================================== */
+/* 6. Modificadores (Estilos de Color) */
+/* ============================================== */
+
+/* Estilo para el botón de Alquilar (Rent) */
+.product-card__actions__button--rent {
+    background-color: var(--color-primary-dark, #820000);
+    /* Rojo Oscuro */
+    color: white;
+}
+
+/* Estilo para el botón de Comprar (Buy) */
+.product-card__actions__button--buy {
+    background-color: #3f68d6;
+    /* Azul */
+    color: white;
+}
+
+/* Estilos de interacción */
+.product-card__actions__button--rent:hover {
+    background-color: #a01010;
+}
+
+.product-card__actions__button--buy:hover {
+    background-color: #5d81e3;
+}
+
+
+/* ======================================= */
+/* ASIDE CARRITO (Bloque: .cart-sidebar)   */
+/* ======================================= */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 90vh;
+    background: white;
+    color: var(--color-dark-text);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-sidebar--open {
+    transform: translateX(0);
+}
+
+.cart-sidebar__items {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.cart-sidebar__total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 20px;
+    border-top: 2px solid var(--color-primary);
+    padding-top: 10px;
+}
+
+.cart-sidebar__checkout-btn {
+    /* Estilos del botón Checkout (reutilizando estilos si existían) */
+    background-color: var(--color-primary-dark);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+/* --- Elementos internos del carrito (Bloque: .cart-item) --- */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+
+/* ======================================= */
+/* NOTIFICACIONES (Bloque: .toast-message) */
+/* ======================================= */
+.toast-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background-color: var(--color-secondary-accent);
+    color: VAR(--color-dark-text);
+    padding: 12px 24px;
+    border-radius: 50px;
+    opacity: 0;
+    transition: all 0.4s;
+    z-index: 300;
+}
+
+.toast-message--visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ======================================= */
+/* BOTÓN SCROLL TOP (ID: #btn-scroll-top)  */
+/* ======================================= */
+#btn-scroll-top {
+    position: fixed;
+    bottom: 60px;
+    left: 20px;
+    background-color: var(--color-primary-dark);
+    color: white;
+    border: black 1px;
+    border-radius: 50%;
+    padding: 10px;
+    z-index: 9999;
+}
+
+#btn-scroll-top:hover {
+    cursor: pointer;
+}
+
+
+/* ======================================= */
+/* FOOTER                                  */
+/* ======================================= */
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    height: 40px;
+    padding: 0 20px;
+    color: var(--color-dark-text);
+
+}
+
+footer #footer-developer {
+    text-decoration: none;
+    font-size: 1em;
+}
+
+/* --- Loader y utilidades --- */
+.loader {
+    font-size: 1.5rem;
+    color: var(--color-secondary-accent);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 720px) {
+    .catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 1em;
+    }
+
+    footer {
+        font-size: 14px;
+    }
+}
+
+@media(max-width: 480px) {
+    .menu ul li a {
+        font-size: 12px;
+    }
+
+    .menu ul li img {
+        display: none;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        margin-bottom: 1em;
+    }
+
+    .product-card {
+        max-width: none;
+    }
+
+    .titulos,
+    .titulos-generos {
+        grid-template-columns: 100%;
+        margin-bottom: 1em;
+    }
+
+    footer {
+        font-size: 10px;
+        margin-bottom: 0;
+    }
+}
