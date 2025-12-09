@@ -140,24 +140,26 @@ const renderMovies = (moviesArray) => {
 
 /* MÓDULO: LÓGICA DEL CARRITO Y TRANSACCIONES */
 const addToCart = (id, selectedPrice, type) => {
-    if (cart.has(id)) {
+    // La clave única debe ser compuesta (ID + Tipo).
+    const key = `${id}-${type}`;
+
+    if (cart.has(key)) { // Usamos la clave compuesta
         // Si ya está, incrementamos la cantidad dentro del objeto.
-        cart.get(id).qty += 1;
+        cart.get(key).qty += 1;
     } else {
-        // 🚨 CRÍTICO: Almacenamos el objeto completo la primera vez.
-        cart.set(id, {
+        // Almacenamos el objeto completo la primera vez.
+        cart.set(key, { // Usamos la clave compuesta
             qty: 1,
             price: selectedPrice,
-            type: type
+            type: type, // 'Alquiler' o 'Compra' (Etiqueta)
+            movieId: id // GUARDAMOS el ID original para buscar la película
         });
     }
-    console.log("Estado actual del carrito Map:", cart);
     updateCartUI();
-    // La notificación se maneja en handleTransaction
 };
 
-const removeFromCart = (id) => {
-    cart.delete(id);
+const removeFromCart = (key) => { // Recibe la clave COMPUESTA como string
+    cart.delete(key);
     updateCartUI();
 };
 
@@ -189,23 +191,22 @@ const updateCartUI = () => {
     if (cart.size === 0) {
         // Estado: Carrito vacío
         container.innerHTML = '<p style="color: #888; text-align: center; margin-top: 50px;">El carrito está vacío</p>';
-
-        // CRUCIAL: Ocultar el badge
         badge.classList.add('hidden');
     } else {
-        for (const [id, item] of cart) {
-            // movies renombrado
-            const product = movies.find(p => p.id === id);
+        // Iteramos sobre la clave COMPUESTA ([key, item])
+        for (const [key, item] of cart) {
+            // Buscamos la película usando el ID original (item.movieId)
+            const product = movies.find(p => p.id === item.movieId);
 
-            // Si no se encuentra la película, se salta la iteración
             if (!product) {
-                console.error(`Película con ID ${id} no encontrada en el catálogo.`);
-                continue; // Salta esta iteración del Map
+                // Se eliminó el console.error de depuración
+                continue; 
             }
-            // Si llegamos aquí, product y item.price existen
+
             totalItems += item.qty;
             totalPrice += (item.price * item.qty);
 
+            // El botón de eliminar llama a removeFromCart con la clave COMPUESTA (key)
             html += `
                 <div class="cart-item">
                     <div>
@@ -214,7 +215,7 @@ const updateCartUI = () => {
                     </div>
                     <div style="display:flex; align-items:center; gap:10px;">
                         <span>$${(item.price * item.qty).toFixed(2)}</span>
-                        <button onclick="removeFromCart(${id})">&times;</button>
+                        <button onclick="removeFromCart('${key}')">&times;</button>
                     </div>
                 </div>`;
         }
@@ -222,7 +223,6 @@ const updateCartUI = () => {
         // 3. Inyectar el HTML y actualizar el badge
         container.innerHTML = html;
         badge.textContent = totalItems;
-        // CRUCIAL: Mostrar el badge
         badge.classList.remove('hidden');
     }
 
@@ -274,21 +274,24 @@ const setupFilterListeners = (allProducts) => {
 };
 
 const addTransactionListeners = () => {
-    // TEMA 4: Delegación de Eventos en el contenedor 'catalog' (ID renombrado)
+    // TEMA 4: Delegación de Eventos en el contenedor 'catalog'
     const container = document.getElementById('catalog');
     if (container) {
         container.addEventListener('click', (e) => {
             const target = e.target;
-            // Se usa data-id
-            const id = parseInt(target.dataset.id);
-            // Se usa data-type
-            const type = target.dataset.type;
 
-            // Verificación de la clase BEM
-            // Solo necesitamos verificar que es uno de los botones de acción
-            if (target.classList.contains('product-card__actions__button')) {
-                // El tipo de acción ya está en data-type, simplificamos la llamada
-                if (type) {
+            // SOLUCIÓN: Usamos .closest() para encontrar el botón de acción
+            const actionButton = target.closest('.product-card__actions__button');
+
+            // 1. Verificamos que el clic realmente vino de un botón de acción
+            if (actionButton) {
+
+                // 2. Leemos los data-attributes del botón que encontramos
+                const id = parseInt(actionButton.dataset.id);
+                const type = actionButton.dataset.type;
+
+                // 3. Verificamos la integridad de los datos
+                if (type && !isNaN(id)) {
                     handleTransaction(id, type);
                 }
             }
@@ -318,7 +321,7 @@ function scrollToTop() {
 
 /* MÓDULO: JQUERY (para el Hover) */
 const addHoverListenersJQuery = () => {
-    // Si jQuery no está definido, salimos para evitar errores fatales.
+    // Se mantiene el console.warn para depurar la carga de jQuery si falla.
     if (typeof jQuery === 'undefined' || typeof $ === 'undefined') {
         console.warn("jQuery no está cargado. La funcionalidad de hover no está disponible.");
         return;
@@ -333,7 +336,7 @@ const addHoverListenersJQuery = () => {
         $(this).find('.product-card__details').css("display", "none");
         $(this).find('.product-card__trailer')
             .css("display", "flex")
-            .css('align-items', 'center'); // Restaurar a transparente o color base
+            .css('align-items', 'center'); 
     });
 
     $(document).off('mouseout', '.product-card').on('mouseout', '.product-card', function () {
@@ -394,5 +397,4 @@ document.addEventListener('DOMContentLoaded', () => {
         // Enlaza la función al evento 'click'
         scrollTopButton.addEventListener('click', scrollToTop);
     }
-
 });
